@@ -1,0 +1,41 @@
+body {
+  font-family: sans-serif;
+  padding: 10px;
+  width: 300px;
+  background-color: #f8f9fa;
+}
+
+h1 {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+input, button {
+  margin: 5px 0;
+  padding: 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+#summaryDisplay {
+  margin-top: 10px;
+  background-color: #e9ecef;
+  padding: 10px;
+}

@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "FocusGuard",
+  "version": "1.0",
+  "description": "Block distractions, schedule tasks, and get daily summaries.",
+  "permissions": ["storage", "alarms", "notifications", "tabs", "scripting"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icons/icon.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "host_permissions": ["<all_urls>"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ]
+}

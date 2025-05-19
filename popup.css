@@ -1,0 +1,46 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 10px;
+  width: 300px;
+}
+
+h1 {
+  font-size: 20px;
+  text-align: center;
+}
+
+input[type="text"], input[type="datetime-local"] {
+  width: 100%;
+  margin-bottom: 5px;
+  padding: 5px;
+  font-size: 14px;
+}
+
+button {
+  width: 100%;
+  padding: 6px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+li {
+  background-color: #f2f2f2;
+  margin: 3px 0;
+  padding: 5px;
+  border-radius: 3px;
+}
+
