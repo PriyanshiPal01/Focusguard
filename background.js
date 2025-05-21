@@ -1,4 +1,82 @@
-chrome.runtime.onInstalled.addListener(() => {
+let currentRuleId = 1000;
+
+function addBlockedSiteRule(domain) {
+  const rule = {
+    id: currentRuleId++,
+    priority: 1,
+    action: { type: "block" },
+    condition: {
+      urlFilter: domain,
+      resourceTypes: ["main_frame"]
+    }
+  };
+
+  chrome.declarativeNetRequest.updateDynamicRules({
+    addRules: [rule],
+    removeRuleIds: []
+  }, () => {
+    if (chrome.runtime.lastError) {
+      console.error("Failed to add rule:", chrome.runtime.lastError.message);
+    } else {
+      console.log(`Blocked site: ${domain}`);
+    }
+  });
+}
+
+function removeBlockedSiteRule(ruleId) {
+  chrome.declarativeNetRequest.updateDynamicRules({
+    addRules: [],
+    removeRuleIds: [ruleId]
+  }, () => {
+    if (chrome.runtime.lastError) {
+      console.error("Failed to remove rule:", chrome.runtime.lastError.message);
+    } else {
+      console.log(`Removed rule ID: ${ruleId}`);
+    }
+  });
+}
+
+async function ensureOffscreenDocument() {
+  if (await chrome.offscreen.hasDocument()) {
+    return;
+  }
+  await chrome.offscreen.createDocument({
+    url: 'offscreen.html',
+    reasons: ['AUDIO_PLAYBACK'],
+    justification: 'Play notification sounds',
+  });
+}
+chrome.alarms.onAlarm.addListener(async (alarm) => {
+  let taskId = null;
+  let isEarly = false;
+
+  if (alarm.name.startsWith("task:early:")) {
+    taskId = alarm.name.split("task:early:")[1];
+    isEarly = true;
+  } else if (alarm.name.startsWith("task:")) {
+    taskId = alarm.name.split("task:")[1];
+  }
+
+  if (!taskId) return;
+
+  const data = await chrome.storage.local.get(`taskTitle-${taskId}`);
+  const title = data[`taskTitle-${taskId}`] || "Scheduled Task";
+
+  // Send message to all tabs to show alert
+  chrome.tabs.query({}, (tabs) => {
+    tabs.forEach((tab) => {
+      chrome.tabs.sendMessage(tab.id, {
+        action: "showTaskAlert",
+        title,
+        isEarly,
+      });
+    });
+  });
+});
+
+
+
+/*chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.local.set({
     blockedSites: [],
     tasks: [],
@@ -53,4 +131,4 @@ chrome.alarms.onAlarm.addListener((alarm) => {
   }
 });
 
-
+*/
